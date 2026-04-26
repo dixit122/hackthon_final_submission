@@ -1,5 +1,8 @@
 #  jiRL --> Teaching Models to Investigate Like Engineers 
 
+[![Watch the video](https://img.youtube.com/vi/Za6tKF8T2Q0/0.jpg)](https://youtu.be/Za6tKF8T2Q0)
+
+
 Every engineering team says they move fast. But in reality, a huge amount of time is lost solving the same bug twice.
 That was the pain point that inspired our project.
 
