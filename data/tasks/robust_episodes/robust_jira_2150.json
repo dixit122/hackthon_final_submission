@@ -1,0 +1,450 @@
+{
+  "task_id": "robust_jira_2150",
+  "objective": "Investigate the assigned Jira ticket and submit the correct resolution using Jira and Outlook evidence.",
+  "max_steps": 16,
+  "assigned_ticket_number": "JIRA-2150",
+  "difficulty": "hard",
+  "jira_records": [
+    {
+      "ticket_number": "JIRA-2104",
+      "assignee": "nisha.patel",
+      "logs": "Build 2026.05.7 failed during post-deploy validation in the notification preference sync flow. Customer-visible symptom: users updating email notification settings receive HTTP 500 and preferences revert after refresh. Service logs show IllegalStateException when NotificationPreferenceAssembler processes an empty locale map after profile hydration retry. Failure started after rollout of build 2026.05.7 in eu-west. Reproduced twice on tenant cedar-retail with request ids req-88A1 and req-88A9. Triage notes mention a similar symptom from an earlier profile sync incident, but current ticket does not include the final fix reference.",
+      "date": "2026-05-18",
+      "build_number": "2026.05.7",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2044",
+      "assignee": "omar.khan",
+      "logs": "Profile hydration regression in build 2026.05.3 caused empty locale map to reach NotificationPreferenceAssembler, throwing IllegalStateException and rolling back saved preferences. Root cause was a null guard skipped during retry path for partially hydrated profiles in eu-west. Fix added locale fallback population before assembler invocation and validated on tenant cedar-retail and northstar-pay.",
+      "date": "2026-05-09",
+      "build_number": "2026.05.3",
+      "resolution": "closed",
+      "status": "closed",
+      "resolution_notes": "CL-2044"
+    },
+    {
+      "ticket_number": "JIRA-2101",
+      "assignee": "rhea.singh",
+      "logs": "Build 2026.05.7 search indexing worker stalled for 14 minutes after shard rebalance. Symptoms include delayed catalog visibility and increased queue depth. Logs indicate Elasticsearch backpressure and are unrelated to notification preference save failures.",
+      "date": "2026-05-17",
+      "build_number": "2026.05.7",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2090",
+      "assignee": "deepa.nair",
+      "logs": "Build 2026.05.6 checkout service showed intermittent tax rounding mismatch when cart currency switched from JPY to USD mid-session. Logs mention stale currency context and cache carryover from previous quote computation. Support saw the mismatch only after account locale changed and cart totals were recalculated from an old quote snapshot.",
+      "date": "2026-05-13",
+      "build_number": "2026.05.6",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2015",
+      "assignee": "vivek.rao",
+      "logs": "Tax rounding mismatch traced to stale quote currency cache during currency switch. Fix invalidated quote totals cache whenever cart currency changed and added regression coverage for JPY to USD transitions.",
+      "date": "2026-05-02",
+      "build_number": "2026.05.2",
+      "resolution": "closed",
+      "status": "closed",
+      "resolution_notes": "CL-2015"
+    },
+    {
+      "ticket_number": "JIRA-2110",
+      "assignee": "meera.joshi",
+      "logs": "Support escalated a report that scheduled invoice exports on build 2026.05.8 are missing tenant-specific footer text. Attached screenshots do not include request ids, exporter version hash, or whether templates were recently edited. Application logs only show generic export completion without warning lines. Current data is insufficient to determine if this matches a known templating bug or a configuration issue.",
+      "date": "2026-05-19",
+      "build_number": "2026.05.8",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2068",
+      "assignee": "karan.malhotra",
+      "logs": "Customer import job on build 2026.05.4 failed with CSV parser exception after embedded newline in address field. Parser stack trace shows invalid quote boundary handling in bulk import worker. Several failed rows came from address fields copied from spreadsheets containing multiline apartment blocks.",
+      "date": "2026-05-11",
+      "build_number": "2026.05.4",
+      "resolution": "closed",
+      "status": "closed",
+      "resolution_notes": "CL-2068"
+    },
+    {
+      "ticket_number": "JIRA-2122",
+      "assignee": "anita.verma",
+      "logs": "Build 2026.05.8 loyalty points ledger posted duplicate redemption entries when wallet sync retried after a 504 from the entitlement service. Customer-facing effect: points deducted twice while order remained in pending-payment state. Logs show duplicate ledger_event_id values emitted after retry and delayed reconciliation worker wake-up. A prior finance incident may have addressed the same duplicate redemption pattern, but this ticket only contains current traces.",
+      "date": "2026-05-20",
+      "build_number": "2026.05.8",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2050",
+      "assignee": "sanjay.gupta",
+      "logs": "Loyalty redemption double-posting occurred when entitlement timeout triggered a retry before the first ledger write was marked idempotent. Root cause was missing replay protection on duplicate ledger_event_id values during wallet reconciliation. Fix enforced idempotency check before ledger commit and delayed retry emission until entitlement acknowledgement returned.",
+      "date": "2026-05-10",
+      "build_number": "2026.05.4",
+      "resolution": "closed",
+      "status": "closed",
+      "resolution_notes": "CL-2050"
+    },
+    {
+      "ticket_number": "JIRA-2125",
+      "assignee": "pooja.shah",
+      "logs": "Build 2026.05.8 report scheduler produced duplicate audit notifications after timezone reconfiguration for APAC tenants. Emails were sent twice, but report files were generated once. Logs mention cron resubscription and timezone reload; however, stack traces do not match the wallet or notification preference incidents.",
+      "date": "2026-05-20",
+      "build_number": "2026.05.8",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2130",
+      "assignee": "rahul.iyer",
+      "logs": "Build 2026.05.9 partner API onboarding failed because webhook callback verification rejected signatures after certificate rotation. Merchant onboarding stalled at callback handshake. Logs show HMAC verification mismatch and old certificate thumbprint references in config cache. The issue may resemble an earlier cert-rotation defect if the cache invalidation path is the same.",
+      "date": "2026-05-21",
+      "build_number": "2026.05.9",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2072",
+      "assignee": "harshita.menon",
+      "logs": "Webhook signature verification broke after certificate rotation because config cache retained the retired thumbprint for 20 minutes. Fix invalidated the verification cache immediately on cert publish and added a background refresh fallback.",
+      "date": "2026-05-12",
+      "build_number": "2026.05.5",
+      "resolution": "closed",
+      "status": "closed",
+      "resolution_notes": "CL-2072"
+    },
+    {
+      "ticket_number": "JIRA-2140",
+      "assignee": "priyanka.sen",
+      "logs": "Build 2026.05.9 cart tax summary drifted by one cent when storefront locale was switched after a partially completed checkout resume. Trace logs mention stale currency context, quote reprice from a cached draft, and account locale normalization happening after totals refresh. Symptoms overlap older JPY-to-USD tax mismatch reports.",
+      "date": "2026-05-21",
+      "build_number": "2026.05.9",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2141",
+      "assignee": "lakshmi.reddy",
+      "logs": "Build 2026.05.9 quote totals were recomputed from a stale draft after locale rehydration during checkout resume, causing minor tax rounding mismatch in switched-currency sessions. Logs again show carryover from an earlier quote snapshot and delayed cache invalidation on currency change.",
+      "date": "2026-05-21",
+      "build_number": "2026.05.9",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2145",
+      "assignee": "manav.kulkarni",
+      "logs": "Build 2026.05.9 invoice footer personalization disappeared for enterprise tenants after template copy. Customer screenshots are partial, template revision is omitted, and export worker logs only contain generic completion events. Triage language is nearly identical to the earlier open report about missing footer text.",
+      "date": "2026-05-21",
+      "build_number": "2026.05.9",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2146",
+      "assignee": "neelam.arora",
+      "logs": "Build 2026.05.9 scheduled report exports for APAC tenants intermittently omit footer branding after a recent template duplication step. Logs do not show exporter warnings, and support did not capture request ids or the exact template revision. Issue wording overlaps the still-open invoice footer investigations.",
+      "date": "2026-05-21",
+      "build_number": "2026.05.9",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2150",
+      "assignee": "arjun.mehra",
+      "logs": "Build 2026.05.10 loyalty wallet replay created duplicate redemption holds after entitlement retry while customer order remained pending. Logs show duplicate ledger_event_id reuse, delayed reconciliation, and an idempotency gap. The wording strongly overlaps finance retry threads, but the ticket itself lacks direct resolution reference.",
+      "date": "2026-05-22",
+      "build_number": "2026.05.10",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2151",
+      "assignee": "soham.das",
+      "logs": "Build 2026.05.10 wallet sync on pending-payment orders deducted points twice after entitlement timeout and duplicate replay of the same ledger_event_id. Support also noted reconciliation worker lag. Symptoms mirror the unresolved descriptions in existing finance triage mail before closure.",
+      "date": "2026-05-22",
+      "build_number": "2026.05.10",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2155",
+      "assignee": "isha.banerjee",
+      "logs": "Build 2026.05.10 webhook verification still referenced a retired certificate thumbprint immediately after key rotation. Merchant onboarding callbacks failed with HMAC mismatch. Logs suggest the thumbprint cache refresh path did not run in time, matching older rotation fallout.",
+      "date": "2026-05-22",
+      "build_number": "2026.05.10",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2160",
+      "assignee": "riya.khanna",
+      "logs": "Build 2026.05.10 account digest notifications were sent twice after customer timezone migration for APAC tenants. Only notification count is wrong; underlying report output appears correct. There are no request ids, cron snapshots, or scheduler reload traces attached yet.",
+      "date": "2026-05-22",
+      "build_number": "2026.05.10",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2161",
+      "assignee": "sanya.chopra",
+      "logs": "Build 2026.05.10 duplicate account digest notifications continue after APAC timezone updates. Support only attached user-facing screenshots without cron resubscription traces or worker restart timing. Pattern is highly similar to the still-open report scheduler investigation.",
+      "date": "2026-05-22",
+      "build_number": "2026.05.10",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2170",
+      "assignee": "rohan.bedi",
+      "logs": "Build 2026.05.10 order acknowledgement emails failed intermittently after template cache refresh. Logs show template lookup miss followed by stale render metadata surviving a worker retry. Support notes mention a historical notification-template chain but no direct fix ticket is attached here.",
+      "date": "2026-05-22",
+      "build_number": "2026.05.10",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2171",
+      "assignee": "aditi.saxena",
+      "logs": "Historical triage ticket for order acknowledgement template cache misses. Notes capture stale render metadata surviving retry after a worker-local cache refresh. The ticket itself was marked duplicate years ago, but its references are still useful because it links to the later mail that references the final fix.",
+      "date": "2026-05-15",
+      "build_number": "2026.05.6",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2172",
+      "assignee": "tanvi.purohit",
+      "logs": "Follow-on investigation captured that acknowledgement template render failures only occurred when stale worker-local template metadata survived a retry after refresh. The issue matched a still older final defect, but the current Jira was used only as a bridge during incident review.",
+      "date": "2026-05-14",
+      "build_number": "2026.05.5",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2085",
+      "assignee": "nikhil.jain",
+      "logs": "Template render failures after cache refresh were traced to stale worker-local metadata surviving retry and bypassing the new template version. Fix invalidated worker-local template metadata before retry and forced template version re-fetch on every acknowledgement render retry.",
+      "date": "2026-05-06",
+      "build_number": "2026.05.3",
+      "resolution": "closed",
+      "status": "closed",
+      "resolution_notes": "CL-2085"
+    },
+    {
+      "ticket_number": "JIRA-2180",
+      "assignee": "mohit.sarin",
+      "logs": "Build 2026.05.11 account summary PDF generation failed after locale fallback and font bundle refresh. Logs mention stale font registry state, fallback locale mismatch, and retry behavior after renderer warmup. Support suspects an older PDF renderer chain but the ticket has no direct fix mapping.",
+      "date": "2026-05-23",
+      "build_number": "2026.05.11",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2181",
+      "assignee": "kriti.malhotra",
+      "logs": "Intermediate PDF renderer investigation recorded stale font registry state surviving locale fallback refresh and renderer retry. The ticket itself did not contain the permanent fix, but referenced the specific mail thread that captured the mapping to the canonical Jira.",
+      "date": "2026-05-16",
+      "build_number": "2026.05.7",
+      "resolution": "unresolved",
+      "status": "open",
+      "resolution_notes": null
+    },
+    {
+      "ticket_number": "JIRA-2088",
+      "assignee": "gaurav.tandon",
+      "logs": "PDF generation failure after locale fallback was traced to stale font registry state surviving renderer warmup retry. Fix rebuilt the font registry on locale fallback and cleared cached renderer metadata before reprocessing PDF requests.",
+      "date": "2026-05-07",
+      "build_number": "2026.05.4",
+      "resolution": "closed",
+      "status": "closed",
+      "resolution_notes": "CL-2088"
+    }
+  ],
+  "outlook_records": [
+    {
+      "mail_id": "MAIL-610",
+      "subject": "JIRA-2104 notification preference save fails after profile retry",
+      "sender_email_ids": [
+        "support@ops.example.com",
+        "nisha.patel@example.com"
+      ],
+      "body": "Thread summary for JIRA-2104: Cedar Retail reports that users updating notification preferences on build 2026.05.7 get HTTP 500 and the old settings return after refresh. Initial grep shows IllegalStateException around NotificationPreferenceAssembler and an empty locale map after profile hydration retry. This looks very close to an earlier eu-west profile-sync issue. Before closing JIRA-2104 as duplicate, check the incident notes preserved in MAIL-598 because that older thread contains the final Jira mapping and validation notes."
+    },
+    {
+      "mail_id": "MAIL-598",
+      "subject": "JIRA-2044 resolved eu-west profile hydration issue impacting notification preferences",
+      "sender_email_ids": [
+        "omar.khan@example.com",
+        "release-managers@example.com"
+      ],
+      "body": "Final update tied to JIRA-2044: the empty locale map came from the retry path skipping fallback population during partial profile hydration. We fixed it under JIRA-2044 and validated preference save flows on cedar-retail and northstar-pay. Any new ticket showing NotificationPreferenceAssembler IllegalStateException plus preference rollback after refresh should be linked back to JIRA-2044 unless new evidence shows a different trigger."
+    },
+    {
+      "mail_id": "MAIL-602",
+      "subject": "JIRA-2090 and JIRA-2140 and JIRA-2141 tax mismatch family mapped to JIRA-2015",
+      "sender_email_ids": [
+        "finance-support@example.com"
+      ],
+      "body": "Reviewed stack traces and cart snapshots for JIRA-2090, JIRA-2140, and JIRA-2141. All three show the same stale quote currency cache defect already fixed in JIRA-2015. No further debugging is needed; any new switched-currency rounding ticket with stale quote snapshot evidence should be marked duplicate of JIRA-2015."
+    },
+    {
+      "mail_id": "MAIL-605",
+      "subject": "JIRA-2110 and JIRA-2145 and JIRA-2146 invoice footer evidence still missing",
+      "sender_email_ids": [
+        "support@example.com"
+      ],
+      "body": "Current customer reports for JIRA-2110, JIRA-2145, and JIRA-2146 do not include export job id, template revision, sample generated PDF, or tenant customization history. We cannot confirm whether these are the old footer templating issue or operator configuration problems. Keep these investigations open. Any new similar Jira should be linked to this thread and to open Jira JIRA-2110 until reproducible evidence arrives."
+    },
+    {
+      "mail_id": "MAIL-612",
+      "subject": "JIRA-2068 CSV import parser failure with embedded newline",
+      "sender_email_ids": [
+        "karan.malhotra@example.com"
+      ],
+      "body": "Bulk import worker bug tracked in JIRA-2068 was fixed last week. Resolution lives in JIRA-2068 where we normalized embedded newlines before tokenization and added regression coverage for quoted address fields."
+    },
+    {
+      "mail_id": "MAIL-620",
+      "subject": "JIRA-2122 and JIRA-2150 and JIRA-2151 loyalty ledger duplicate redemption after retry",
+      "sender_email_ids": [
+        "revenue-ops@example.com",
+        "anita.verma@example.com"
+      ],
+      "body": "Initial triage for JIRA-2122, JIRA-2150, and JIRA-2151: duplicate redemption entries appear after wallet sync retries following entitlement timeout. We found matching ledger_event_id reuse and delayed reconciliation worker wake-up. This resembles an earlier finance retry incident, but the closest preserved discussion is in MAIL-621. Open MAIL-621 next because that thread narrows the issue family and points to the next-hop resolution note."
+    },
+    {
+      "mail_id": "MAIL-621",
+      "subject": "JIRA-2122 and JIRA-2150 and JIRA-2151 follow-up on duplicate loyalty redemption lineage",
+      "sender_email_ids": [
+        "finance-eng@example.com"
+      ],
+      "body": "Follow-up for JIRA-2122, JIRA-2150, and JIRA-2151: engineering compared the duplicate ledger_event_id pattern with prior retry-related defects. The onboarding notes in MAIL-622 contain the exact replay-protection conclusion and the Jira ticket used for the permanent fix. Do not decide from this mail alone; continue to MAIL-622."
+    },
+    {
+      "mail_id": "MAIL-622",
+      "subject": "JIRA-2050 final resolution for loyalty redemption double-posting now relevant to JIRA-2122 and JIRA-2150 and JIRA-2151",
+      "sender_email_ids": [
+        "sanjay.gupta@example.com",
+        "finance-incident-review@example.com"
+      ],
+      "body": "Incident closure summary from JIRA-2050: wallet sync retries were allowed to submit the same ledger_event_id twice before the first attempt was committed, so duplicate point deductions appeared. The permanent fix in JIRA-2050 added an idempotency gate before ledger commit and delayed retry emission until entitlement acknowledgement returned. JIRA-2122, JIRA-2150, and JIRA-2151 match the same signature and should be closed as duplicate of JIRA-2050."
+    },
+    {
+      "mail_id": "MAIL-630",
+      "subject": "JIRA-2130 and JIRA-2155 webhook signature failures after certificate rotation",
+      "sender_email_ids": [
+        "partner-support@example.com"
+      ],
+      "body": "For JIRA-2130 and JIRA-2155 we are seeing HMAC mismatch right after certificate rotation, with stale thumbprint references still present in callback verification logs. This looks similar to an older cert cache issue. The relevant intermediate discussion is preserved in MAIL-631."
+    },
+    {
+      "mail_id": "MAIL-631",
+      "subject": "JIRA-2130 and JIRA-2155 point to earlier cert cache defect JIRA-2072",
+      "sender_email_ids": [
+        "harshita.menon@example.com"
+      ],
+      "body": "Confirmed that JIRA-2130 and JIRA-2155 match the certificate thumbprint cache retention issue previously fixed in JIRA-2072. If the webhook verification logs show the retired thumbprint after publish, these should be linked to JIRA-2072 as duplicate."
+    },
+    {
+      "mail_id": "MAIL-640",
+      "subject": "JIRA-2160 and JIRA-2161 duplicate digest notifications after timezone migration remain open",
+      "sender_email_ids": [
+        "ops-notify@example.com",
+        "pooja.shah@example.com"
+      ],
+      "body": "Open investigation for JIRA-2160 and JIRA-2161: duplicate account digest notifications appear after APAC timezone migration, but we still lack cron resubscription traces, scheduler reload timestamps, and worker restart diagnostics. Treat new matching tickets as part of this open thread and cross-reference JIRA-2160 until stronger evidence appears."
+    },
+    {
+      "mail_id": "MAIL-641",
+      "subject": "JIRA-2161 duplicate digest thread requests more scheduler diagnostics and points to MAIL-640",
+      "sender_email_ids": [
+        "scheduler-triage@example.com"
+      ],
+      "body": "For JIRA-2161 the symptom wording matches the open digest-notification investigation, but this mail does not resolve it. Continue using MAIL-640 as the primary open thread and keep JIRA-2161 open/unresolved until scheduler reload traces are attached."
+    },
+    {
+      "mail_id": "MAIL-650",
+      "subject": "JIRA-2140 switched-currency rounding summary points to MAIL-602",
+      "sender_email_ids": [
+        "checkout-ops@example.com"
+      ],
+      "body": "JIRA-2140 shows the same stale quote snapshot pattern already summarized in MAIL-602. Use MAIL-602 as the direct evidence thread for the old fix in JIRA-2015."
+    },
+    {
+      "mail_id": "MAIL-651",
+      "subject": "JIRA-2141 tax drift comparison also points to MAIL-602",
+      "sender_email_ids": [
+        "checkout-ops@example.com"
+      ],
+      "body": "JIRA-2141 is another presentation of the switched-currency stale quote problem. Route investigators to MAIL-602 for the consolidated duplicate determination and earlier Jira mapping."
+    },
+    {
+      "mail_id": "MAIL-660",
+      "subject": "JIRA-2170 acknowledgement template retry issue resembles JIRA-2171",
+      "sender_email_ids": [
+        "notify-triage@example.com",
+        "rohan.bedi@example.com"
+      ],
+      "body": "Triage for JIRA-2170 shows order acknowledgement template lookup miss after cache refresh and retry. The behavior strongly resembles JIRA-2171, which captured the earlier incident review. Open JIRA-2171 next; that Jira notes the follow-up mail thread needed to reach the final canonical fix."
+    },
+    {
+      "mail_id": "MAIL-661",
+      "subject": "JIRA-2171 follow-up mail points toward JIRA-2172 in the acknowledgement template lineage",
+      "sender_email_ids": [
+        "notify-incident-review@example.com"
+      ],
+      "body": "Reviewing JIRA-2171 shows it was only an intermediate duplicate during the acknowledgement template incident. The next useful bridge ticket is JIRA-2172, whose notes then point to the final closure mail MAIL-662."
+    },
+    {
+      "mail_id": "MAIL-662",
+      "subject": "JIRA-2172 final acknowledgement template bridge mail points to JIRA-2085",
+      "sender_email_ids": [
+        "nikhil.jain@example.com",
+        "messaging-incident-review@example.com"
+      ],
+      "body": "JIRA-2172 was not the real fix. The final canonical defect was JIRA-2085, where stale worker-local template metadata was cleared before retry and template version re-fetch was enforced. Close new matching tickets as duplicate of JIRA-2085."
+    },
+    {
+      "mail_id": "MAIL-670",
+      "subject": "JIRA-2180 PDF renderer fallback issue resembles JIRA-2181",
+      "sender_email_ids": [
+        "pdf-triage@example.com"
+      ],
+      "body": "Initial review of JIRA-2180 suggests the locale fallback PDF rendering failure resembles JIRA-2181, which documented the intermediate investigation. Open JIRA-2181 next because it links to the final renderer closure mail."
+    },
+    {
+      "mail_id": "MAIL-671",
+      "subject": "JIRA-2181 renderer bridge mail identifies final Jira JIRA-2088",
+      "sender_email_ids": [
+        "pdf-incident-review@example.com"
+      ],
+      "body": "JIRA-2181 was only a bridge during investigation. The real fix lives in JIRA-2088, where the font registry was rebuilt on locale fallback and cached renderer metadata was cleared before retry."
+    }
+  ]
+}

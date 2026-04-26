@@ -1,0 +1,4 @@
+name: jira-outlook-env
+version: 0.1.0
+description: Jira and Outlook retrieval environment
+entrypoint: server
