@@ -1,9 +1,5 @@
 # Grading and reward-design research for Jira/Outlook triage
 
-## Current weakness
-
-The current environment mostly rewards tool use with small fixed bonuses and gives a single large terminal reward for the final category. That teaches task completion weakly, but it does not strongly teach *why* the agent should gather the right evidence before answering.
-
 ## What good grading should teach
 
 A stronger system should reward four things:
@@ -122,3 +118,7 @@ The state already tracks discovered Jira and mail ids. That is useful because no
 ## Bottom line
 
 The biggest improvement is to move from “correct final label only” to “correct final label supported by good evidence retrieval.” That should teach the agent to use Jira and Outlook as reasoning tools instead of guessing early. citeturn0search1turn0search2
+
+## Current weakness
+
+The current environment mostly rewards tool use with small fixed bonuses and gives a single large terminal reward for the final category. That teaches task completion weakly, but it does not strongly teach *why* the agent should gather the right evidence before answering.
